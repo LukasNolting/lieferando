@@ -1,0 +1,171 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: "Raleway";
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 20px;
+  background-color: white;
+  width: calc(100% - 40px);
+  box-shadow: 4px 7px 13px 8px rgba(37, 37, 37, 0.41);
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.logo-nav {
+  width: 50px;
+}
+
+h1 {
+  color: #ff8000;
+  font-family: "Dancing Script";
+  font-size: 32px;
+}
+
+.nav-mid {
+  display: flex;
+  align-items: center;
+}
+
+.nav-mid-text {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  height: 50px;
+}
+
+.nav-right-icon {
+  height: 35px;
+  width: 35px;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: transparent;
+}
+
+.nav-right-round {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  height: 55px;
+  width: 55px;
+}
+
+.nav-right-round:hover {
+  background-color: #dad5d5a9;
+  cursor: pointer;
+}
+
+.content {
+  display: flex;  
+}
+
+.content-left {
+  display: flex;
+  flex-direction: column;
+  width: 75%;
+}
+
+.content-img {
+  height: 320px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.content-left-header {
+  width: 100%;
+  padding: 24px 0 16px 0;
+  display: flex;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+}
+.content-left-head {
+  display: flex;
+  justify-content: space-between;
+}
+
+.content-left-icons {
+  display: flex;
+  gap: 20px;
+}
+
+h2 {
+  font-weight: 900;
+  font-size: 28px;
+}
+
+.content-left-icon {
+  height: 26px;
+  width: 26px;
+  object-fit: cover;
+  cursor: pointer;
+}
+.content-left-icon-heartnofill {
+  height: 26px;
+  width: 26px;
+  object-fit: cover;
+  background-image: url(../img/icons/heart_nofill.svg);
+  cursor: pointer;
+  background-repeat: no-repeat;
+}
+
+.head-stars{
+  height: 25px;
+  width: 25px;
+}
+
+.content-left-content{
+  width: 80%;
+}
+
+
+.recommendation{
+padding: 20px 0 ;
+display: flex;
+align-items: center;
+}
+
+.recommendations{
+  padding-left: 10px;
+  color: black;
+}
+
+.icons-header-big{
+  height: 20px;
+  width: 20px;
+}
+.icons-header-small{
+  height: 30px;
+  width: 25px;
+}
+
+.flex-mid-hor{
+  display: flex;
+  align-items: center;
+  gap:5px;
+}
+
+.basket{
+  width: 25%;
+  padding: 35px 16px;
+  text-align: center;
+  height: calc(100vh - 170px);
+}
