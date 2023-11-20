@@ -126,6 +126,14 @@ h2 {
   cursor: pointer;
   background-repeat: no-repeat;
 }
+.content-left-icon-heartfill {
+  height: 26px;
+  width: 26px;
+  object-fit: cover;
+  background-image: url(../img/icons/heart_filled.svg);
+  cursor: pointer;
+  background-repeat: no-repeat;
+}
 
 .head-stars {
   height: 25px;
