@@ -74,7 +74,7 @@ h1 {
 }
 
 .content {
-  display: flex;  
+  display: flex;
 }
 
 .content-left {
@@ -127,45 +127,63 @@ h2 {
   background-repeat: no-repeat;
 }
 
-.head-stars{
+.head-stars {
   height: 25px;
   width: 25px;
 }
 
-.content-left-content{
+.content-left-content {
   width: 80%;
 }
 
-
-.recommendation{
-padding: 20px 0 ;
-display: flex;
-align-items: center;
+.recommendation {
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
 }
 
-.recommendations{
+.recommendations {
   padding-left: 10px;
   color: black;
 }
 
-.icons-header-big{
+.icons-header-big {
   height: 20px;
   width: 20px;
 }
-.icons-header-small{
+.icons-header-small {
   height: 30px;
   width: 25px;
 }
 
-.flex-mid-hor{
+.flex-mid-hor {
   display: flex;
   align-items: center;
-  gap:5px;
+  gap: 5px;
 }
 
-.basket{
+.basket {
   width: 25%;
   padding: 35px 16px;
   text-align: center;
   height: calc(100vh - 170px);
+}
+
+.cards {
+  border: 1px solid red;
+  height: 100%;
+  margin: 0 15px;
+}
+
+.card {
+  border: 1px solid red;
+  height: 150px;
+  margin: 15px;
+  border-radius: 10px;
+}
+
+.card-icon {
+  height: 30px;
+  width: 30px;
+  cursor: pointer;
 }
