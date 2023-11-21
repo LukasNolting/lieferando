@@ -14,7 +14,10 @@ html {
   padding: 20px 20px;
   background-color: white;
   width: calc(100% - 40px);
-  box-shadow: 4px 7px 13px 8px rgba(37, 37, 37, 0.41);
+box-shadow: 0px 6px 8px 0px rgba(0,0,0,0.1);
+-webkit-box-shadow: 0px 6px 8px 0px rgba(0,0,0,0.1);
+-moz-box-shadow: 0px 6px 8px 0px rgba(0,0,0,0.1);
+position: fixed;
 }
 
 .nav-left {
@@ -40,7 +43,7 @@ h1 {
 }
 
 .nav-mid-text {
-  font-size: 14px;
+  font-size: 20px;
   font-weight: bold;
 }
 
@@ -69,7 +72,7 @@ h1 {
 }
 
 .nav-right-round:hover {
-  background-color: #dad5d5a9;
+  background-color: #F5F5F5;
   cursor: pointer;
 }
 
@@ -87,6 +90,7 @@ h1 {
   height: 320px;
   width: 100%;
   object-fit: cover;
+  margin-top: 95px;
 }
 
 .content-left-header {
@@ -96,6 +100,9 @@ h1 {
   flex-direction: column;
   display: flex;
   align-items: center;
+  box-shadow: 0px 6px 8px 0px rgba(0,0,0,0.1);
+-webkit-box-shadow: 0px 6px 8px 0px rgba(0,0,0,0.1);
+-moz-box-shadow: 0px 6px 8px 0px rgba(0,0,0,0.1);
 }
 .content-left-head {
   display: flex;
@@ -172,26 +179,61 @@ h2 {
 
 .basket {
   width: 25%;
-  padding: 35px 16px;
+  padding: 35px 0px;
+  height: 100vh;
+  position: fixed;
+  right: 0;
   text-align: center;
-  height: calc(100vh - 170px);
+box-shadow: -6px 0px 8px 0px rgba(0,0,0,0.1);
+-webkit-box-shadow: -6px 0px 8px 0px rgba(0,0,0,0.1);
+-moz-box-shadow: -6px 0px 8px 0px rgba(0,0,0,0.1);
+margin-top: 95px;
 }
 
 .cards {
-  border: 1px solid red;
+  /* border: 1px solid red; */
   height: 100%;
-  margin: 0 15px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 15px;
 }
 
 .card {
-  border: 1px solid red;
-  height: 150px;
-  margin: 15px;
+  border: 1px solid #DBD9D7;
   border-radius: 10px;
+  width: 80%;
+  margin-top: 15px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+}
+.card:hover {
+background-color: #F5F5F5;
+cursor: pointer;
 }
 
 .card-icon {
-  height: 30px;
-  width: 30px;
+  height: 28px;
+  width: 24px;
   cursor: pointer;
+}
+
+.menu-text{
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.card-menu-add{
+  width: 35px;
+  height: 35px;
+  background-color: #F5F5F5;
+  border-radius: 50%;
+}
+
+.menu-head{
+  display: flex;
+  justify-content: space-between;
 }
