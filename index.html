@@ -9,7 +9,7 @@
     <link rel="icon" type="image/svg+xml" href="./img/logo.svg" sizes="any" />
     <title>Lieferando</title>
   </head>
-  <body onload="render()">
+  <body onload="render(), renderBasket()">
     <nav class="navigation">
       <a href="#" class="nav-left">
         <img src="./img/logo.svg" alt="logo" class="logo-nav" />
@@ -41,7 +41,7 @@
                   class="content-left-icon"
                   onclick="noFunction()"
                 />
-                <div class="content-left-icon-heartnofill"></div>
+                <div class="" id="liked" onclick="likeCheck()"></div>
               </div>
             </div>
             <div class="recommendation">
@@ -95,10 +95,16 @@
             </div>
           </div>
         </div>
-        <div class="cards" id="cards">
+        <div class="cards" id="cards"></div>
+      </div>
+      <div class="basket">
+        <span class="basket-header">WARENKORB</span>
+
+        <div class="basket-content">
+          <div class="basket-card" id="basket-card"></div>
+          <div id="total-amount" class=""></div>
         </div>
       </div>
-      <div class="basket">WARENKORB</div>
     </section>
   </body>
 </html>

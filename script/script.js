@@ -1,37 +1,40 @@
-let food = [
+let likequery = [false];
+
+let menu = [
   {
-    name: "Garnelen",
-    description:
-      "Garnelen mit Kirschtomaten, Lauchzwiebeln, Knoblauch und Tomatensauce",
-    price: 9.0,
-  },
-  {
-    name: "Tomatencremesuppe",
-    description: "Tomatensauce und Sahnesauce",
-    price: 7.0,
-  },
-  {
-    name: "Mista Salat",
-    description:
-      "mit Karotten, Gurken, frischen Tomaten, Zwiebeln, Paprika und Rucola",
-    price: 9.0,
+    name: "Pizzabrötchen",
+    description: "Pizzabrötchen mit Käse",
+    price: 6.5,
   },
   {
     name: "Hirtenkäse Salat",
     description: "mit frischen Tomaten, Gurken, Oliven und Hirtenkäse",
-    price: 9.5,
+    price: 7.5,
   },
   {
     name: "Pizza Margherita",
     description: "mit Tomatensauce und Käse",
-    price: 7.5,
+    price: 9.5,
   },
   {
     name: "Pizza Salami",
     description: "mit Tomatensauce, Käse und Salami",
-    price: 8.0,
+    price: 10.5,
+  },
+  {
+    name: "Coca-Cola 1,0l",
+    description: "Coca-Cola steht für einzigartigen Geschmack.",
+    price: 2.0,
   },
 ];
+
+let nameFood = [];
+let prices = [];
+let amounts = [];
+
+loadFromLocalStorageAmounts();
+loadFromLocalStorageBasket();
+loadFromLocalStoragePrices();
 
 function noFunction() {
   alert("Aktuell keine Funktion! Danke für dein Verständnis! :)");
@@ -41,15 +44,36 @@ function render() {
   let content = document.getElementById("cards");
   content.innerHTML = "";
 
-  for (let i = 0; i < food.length; i++) {
-    const post = food[i];
+  for (let i = 0; i < menu.length; i++) {
     content.innerHTML += card(i);
   }
+
+  let likeIconCSS = likequery ? "heartfill" : "heartnofill";
+  document.getElementById("liked").classList.add(likeIconCSS);
+}
+
+function likeCheck() {
+  let like = likequery;
+  let likedIcon = document.getElementById("liked");
+
+  if (!likequery) {
+    like++;
+    likequery = true;
+    likedIcon.classList.remove("content-left-icon-heartnofill");
+    likedIcon.classList.add("content-left-icon-heartfill");
+  } else {
+    like--;
+    likequery = like;
+    likequery = false;
+    likedIcon.classList.remove("content-left-icon-heartnofill");
+    likedIcon.classList.add("content-left-icon-heartfill");
+  }
+
 }
 
 function card(i) {
-  const dishes = food[i];
-  return /*html*/ `<div class="card" onclick="noFunction()">
+  let dishes = menu[i];
+  return /*html*/ `<div class="card" onclick="addToBasket(${i})">
             <div class="card-content">
               <div class="flex-mid-hor menu-head">
                 <div class="flex-mid-hor">
@@ -70,6 +94,180 @@ function card(i) {
             </div>
             <span
               >${dishes["description"]}</span>
-            <span class="menu-text">9,00 €</span>
+            <span class="menu-text">${dishes["price"].toFixed(2)}€</span>
           </div>`;
+}
+
+function renderBasket() {
+  let basketElement = document.getElementById("basket-card");
+  basketElement.innerHTML = "";
+
+  for (let i = 0; i < nameFood.length; i++) {
+    basketElement.innerHTML += basketCard(i);
+  }
+  document.getElementById("total-amount").innerHTML = '';
+  displayTotal();
+  saveToLocalStorage();
+}
+
+function basketCard(i) {
+  let subtotal = prices[i] * amounts[i];
+  return /*html*/ `            
+    <div class="basket-position" id="basket-position">
+      <div class="basket-position-head">
+        <span>${nameFood[i]}</span>
+        <span>${subtotal.toFixed(2)} €</span>
+      </div>
+      <div class="basket-position-value">
+        <img src="./img/icons/minus.svg" 
+        alt="minus" 
+        class="basket-position-value-icon"
+        onclick="decreaseAmount(${i})">
+        <span class="basket-position-value-text">${amounts[i]}</span>
+        <img src="./img/icons/plus.svg" 
+        alt="plus" 
+        class="basket-position-value-icon"
+        onclick="increaseAmount(${i}), saveToLocalStorage();">
+      </div>
+    </div>`;
+}
+
+function addToBasket(i) {
+  let index = getIndex(menu[i]["name"]);
+
+  if (index == -1) {
+    nameFood.push(menu[i]["name"]);
+    prices.push(menu[i]["price"].toFixed(2));
+    amounts.push(1);
+  } else {
+    amounts[index]++;
+  }
+  renderBasket();
+  saveToLocalStorage();
+}
+
+function getIndex(i) {
+  index = nameFood.indexOf(i);
+  if (index != -1) {
+    return index;
+  } else {
+    return -1;
+  }
+}
+
+function increaseAmount(i) {
+  amounts[i]++;
+  renderBasket();
+  saveToLocalStorage();
+}
+
+function decreaseAmount(i) {
+  if (amounts[i] > 0) {
+    amounts[i]--;
+
+    if (amounts[i] === 0) {
+      nameFood.splice(i, 1);
+      prices.splice(i, 1);
+      amounts.splice(i, 1);
+      document.getElementById("total-amount").classList.remove("total-amount-green");
+      document.getElementById("total-amount").classList.remove("total-amount-yellow");
+    }
+  }
+  renderBasket();
+  saveToLocalStorage();
+}
+
+function calculateTotalAmount() {
+  let totalAmount = 0;
+
+  for (let i = 0; i < nameFood.length; i++) {
+    totalAmount += prices[i] * amounts[i];
+  }
+  return totalAmount;
+}
+
+function displayTotal() {
+  let subtotal = calculateTotalAmount();
+  if (subtotal == 0) {
+    document.getElementById("basket-card").innerHTML = emptyBasket();
+  } else {
+    if (subtotal < 15) {
+      document.getElementById("total-amount").innerHTML = minOrderValueText();
+      document.getElementById("total-amount").classList.add("total-amount-yellow");
+      document.getElementById("total-amount").classList.remove("total-amount-green");
+    } else {
+      document.getElementById("total-amount").innerHTML = orderFinishedText();
+      document.getElementById("total-amount").classList.remove("total-amount-yellow");
+      document.getElementById("total-amount").classList.add("total-amount-green");
+    }
+  }
+}
+
+function minOrderValue() {
+  alert("Mindestbestellwert nicht erreicht!");
+}
+
+function minOrderValueText() {
+  let subtotal = calculateTotalAmount();
+  let remainingAmount = 15 - subtotal;
+  return /*html*/ `
+            <span> Gesamtsumme: ${subtotal.toFixed(2)}€ </span> 
+            <span> Bis zum Mindestbestellwert: ${remainingAmount.toFixed(2)}€ </span>
+            <button class="button-no-function" onclick="minOrderValue()">Bestellen (${subtotal.toFixed(2)}€)</button>`;
+}
+
+function orderFinishedText() {
+  let subtotal = calculateTotalAmount();
+  let totalAmount = subtotal + 3;
+  return /*html*/`
+            <span> Zwischensumme: ${subtotal.toFixed(2)}</span>
+            <span> Lieferkosten: 3,00 € </span>
+            <button class="button-order-finish" onclick="orderFinished()">Bestellen (${totalAmount.toFixed(2)}€)</button>`
+}
+
+function orderFinished() {
+  alert("Vielen Dank für Ihre Bestellung!");
+  nameFood.splice(0, nameFood.length);
+  prices.splice(0, prices.length);
+  amounts.splice(0, amounts.length);
+  renderBasket();
+  document.getElementById("total-amount").classList.remove("total-amount-green");
+  document.getElementById("total-amount").classList.remove("total-amount-yellow");
+  saveToLocalStorage();
+}
+
+function emptyBasket() {
+  return /*html*/ `<div class="basket-empty" id="basket-empty">
+            <img src="./img/icons/basket.svg" alt="basket-image" class="basket-image">
+            <span class="text-bold-20">Fülle deinen Warenkorb</span>
+            <span>Füge einige leckere Gerichte aus der Speisekarte hinzu und bestelle dein Essen.</span>
+            </div>`;          
+}
+
+function saveToLocalStorage() {
+  localStorage.setItem("nameFood", JSON.stringify(nameFood));
+  localStorage.setItem("prices", JSON.stringify(prices));
+  localStorage.setItem("amounts", JSON.stringify(amounts));
+}
+
+function loadFromLocalStorageBasket() {
+  let storageAsText = localStorage.getItem("nameFood");
+
+  if (storageAsText) {
+    nameFood = JSON.parse(storageAsText);
+  }
+}
+function loadFromLocalStoragePrices() {
+  let storageAsText = localStorage.getItem("prices");
+
+  if (storageAsText) {
+    prices = JSON.parse(storageAsText);
+  }
+}
+function loadFromLocalStorageAmounts() {
+  let storageAsText = localStorage.getItem("amounts");
+
+  if (storageAsText) {
+    amounts = JSON.parse(storageAsText);
+  }
 }
