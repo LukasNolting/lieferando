@@ -1,4 +1,4 @@
-let likequery = [false];
+let likequery = [];
 
 let menu = [
   {
@@ -35,6 +35,7 @@ let amounts = [];
 loadFromLocalStorageAmounts();
 loadFromLocalStorageBasket();
 loadFromLocalStoragePrices();
+loadFromLocalStorageLiked();
 
 function noFunction() {
   alert("Aktuell keine Funktion! Danke für dein Verständnis! :)");
@@ -49,26 +50,27 @@ function render() {
   }
 
   let likeIconCSS = likequery ? "heartfill" : "heartnofill";
-  document.getElementById("liked").classList.add(likeIconCSS);
+  document.getElementById(`liked`).classList.add(likeIconCSS);
 }
+
 
 function likeCheck() {
   let like = likequery;
   let likedIcon = document.getElementById("liked");
 
-  if (!likequery) {
+  if (likequery) {
+    like--;
+    likequery = false;
+    likedIcon.classList.remove("heartfill");
+    likedIcon.classList.add("heartnofill");
+  } else {
     like++;
     likequery = true;
-    likedIcon.classList.remove("content-left-icon-heartnofill");
-    likedIcon.classList.add("content-left-icon-heartfill");
-  } else {
-    like--;
-    likequery = like;
-    likequery = false;
-    likedIcon.classList.remove("content-left-icon-heartnofill");
-    likedIcon.classList.add("content-left-icon-heartfill");
+    likedIcon.classList.remove("heartnofill");
+    likedIcon.classList.add("heartfill");
   }
-
+    saveToLocalStorage();
+    render();
 }
 
 function card(i) {
@@ -248,6 +250,7 @@ function saveToLocalStorage() {
   localStorage.setItem("nameFood", JSON.stringify(nameFood));
   localStorage.setItem("prices", JSON.stringify(prices));
   localStorage.setItem("amounts", JSON.stringify(amounts));
+  localStorage.setItem("likequery", JSON.stringify(likequery));
 }
 
 function loadFromLocalStorageBasket() {
@@ -269,5 +272,12 @@ function loadFromLocalStorageAmounts() {
 
   if (storageAsText) {
     amounts = JSON.parse(storageAsText);
+  }
+}
+function loadFromLocalStorageLiked() {
+  let storageAsText = localStorage.getItem("likequery");
+
+  if (storageAsText) {
+    likequery = JSON.parse(storageAsText);
   }
 }
