@@ -55,22 +55,18 @@ function render() {
 
 
 function likeCheck() {
-  let like = likequery;
   let likedIcon = document.getElementById("liked");
 
   if (likequery) {
-    like--;
     likequery = false;
     likedIcon.classList.remove("heartfill");
     likedIcon.classList.add("heartnofill");
   } else {
-    like++;
     likequery = true;
     likedIcon.classList.remove("heartnofill");
     likedIcon.classList.add("heartfill");
   }
     saveToLocalStorage();
-    render();
 }
 
 function card(i) {
@@ -102,13 +98,21 @@ function card(i) {
 
 function renderBasket() {
   let basketElement = document.getElementById("basket-card");
+  let basketElementRes = document.getElementById("basket-position-res");
+  
   basketElement.innerHTML = "";
-
   for (let i = 0; i < nameFood.length; i++) {
     basketElement.innerHTML += basketCard(i);
   }
+  basketElementRes.innerHTML = "";
+  for (let i = 0; i < nameFood.length; i++) {
+    basketElementRes.innerHTML += basketCard(i);
+  }
   document.getElementById("total-amount").innerHTML = '';
+  document.getElementById("total-amount-resp").innerHTML = '';
   displayTotal();
+  basketResponsiveText();
+  displayTotalResponsive();  
   saveToLocalStorage();
 }
 
@@ -171,8 +175,8 @@ function decreaseAmount(i) {
       nameFood.splice(i, 1);
       prices.splice(i, 1);
       amounts.splice(i, 1);
-      document.getElementById("total-amount").classList.remove("total-amount-green");
       document.getElementById("total-amount").classList.remove("total-amount-yellow");
+      document.getElementById("total-amount-resp").classList.remove("total-amount-yellow");
     }
   }
   renderBasket();
@@ -187,6 +191,14 @@ function calculateTotalAmount() {
   }
   return totalAmount;
 }
+
+function basketResponsiveText() {
+  let subtotal = calculateTotalAmount();
+  let responsiveBasketTextElement = document.getElementById("openResponsiveBasketText");
+  responsiveBasketTextElement.innerHTML = /*html*/ `
+  <span class="basket-responsive-text">Warenkorb (${subtotal.toFixed(2)} €)</span>`;
+}
+
 
 function displayTotal() {
   let subtotal = calculateTotalAmount();
@@ -204,6 +216,22 @@ function displayTotal() {
     }
   }
 }
+function displayTotalResponsive() {
+  let subtotal = calculateTotalAmount();
+  if (subtotal == 0) {
+    document.getElementById("basket-position-res").innerHTML = emptyBasket();
+  } else {
+    if (subtotal < 15) {
+      document.getElementById("total-amount-resp").innerHTML = minOrderValueText();
+      document.getElementById("total-amount-resp").classList.add("total-amount-yellow");
+      document.getElementById("total-amount-resp").classList.remove("total-amount-green");
+    } else {
+      document.getElementById("total-amount-resp").innerHTML = orderFinishedText();
+      document.getElementById("total-amount-resp").classList.remove("total-amount-yellow");
+      document.getElementById("total-amount-resp").classList.add("total-amount-green");
+    }
+  }
+}
 
 function minOrderValue() {
   alert("Mindestbestellwert nicht erreicht!");
@@ -213,18 +241,18 @@ function minOrderValueText() {
   let subtotal = calculateTotalAmount();
   let remainingAmount = 15 - subtotal;
   return /*html*/ `
-            <span> Gesamtsumme: ${subtotal.toFixed(2)}€ </span> 
-            <span> Bis zum Mindestbestellwert: ${remainingAmount.toFixed(2)}€ </span>
-            <button class="button-no-function" onclick="minOrderValue()">Bestellen (${subtotal.toFixed(2)}€)</button>`;
+            <span> Gesamtsumme: ${subtotal.toFixed(2)} €</span> 
+            <span> Bis zum Mindestbestellwert: ${remainingAmount.toFixed(2)} €</span>
+            <button class="button-no-function" onclick="minOrderValue()">Bestellen (${subtotal.toFixed(2)} €)</button>`;
 }
 
 function orderFinishedText() {
   let subtotal = calculateTotalAmount();
   let totalAmount = subtotal + 3;
   return /*html*/`
-            <span> Zwischensumme: ${subtotal.toFixed(2)}</span>
-            <span> Lieferkosten: 3,00 € </span>
-            <button class="button-order-finish" onclick="orderFinished()">Bestellen (${totalAmount.toFixed(2)}€)</button>`
+            <span> Zwischensumme: ${subtotal.toFixed(2)} €</span>
+            <span> Lieferkosten: 3.00 € </span>
+            <button class="button-order-finish" onclick="orderFinished()">Bestellen (${totalAmount.toFixed(2)} €)</button>`
 }
 
 function orderFinished() {
@@ -232,9 +260,11 @@ function orderFinished() {
   nameFood.splice(0, nameFood.length);
   prices.splice(0, prices.length);
   amounts.splice(0, amounts.length);
-  renderBasket();
   document.getElementById("total-amount").classList.remove("total-amount-green");
   document.getElementById("total-amount").classList.remove("total-amount-yellow");
+  document.getElementById("total-amount-resp").classList.remove("total-amount-green");
+  document.getElementById("total-amount-resp").classList.remove("total-amount-yellow");
+  renderBasket();
   saveToLocalStorage();
 }
 
@@ -280,4 +310,17 @@ function loadFromLocalStorageLiked() {
   if (storageAsText) {
     likequery = JSON.parse(storageAsText);
   }
+}
+
+function openResponsiveBasket() {
+  document.getElementById("openResponsiveBasket").classList.remove("d-none");
+  document.getElementById("openResponsiveBasketPos").classList.remove("d-none");
+  document.getElementById("openResponsiveBasketText").classList.add("d-none");
+
+}
+
+function closeResponsiveBasket() {
+  document.getElementById("openResponsiveBasket").classList.add("d-none");
+  document.getElementById("openResponsiveBasketPos").classList.add("d-none");
+  document.getElementById("openResponsiveBasketText").classList.remove("d-none");
 }

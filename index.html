@@ -9,22 +9,16 @@
     <link rel="icon" type="image/svg+xml" href="./img/logo.svg" sizes="any" />
     <title>Lieferando</title>
   </head>
-  <body onload="render(), renderBasket()">
+  <body onload="render(), renderBasket(), basketResponsiveText()">
     <nav class="navigation">
       <a href="#" class="nav-left">
         <img src="./img/logo.svg" alt="logo" class="logo-nav" />
-        <h1>Lieferando</h1>
+        <h1 class="logo-text">Lieferando</h1>
       </a>
       <div class="nav-mid">
         <span class="nav-mid-text">Speisekarte</span>
       </div>
-      <div class="nav-right-round" onclick="noFunction()">
-        <img
-          src="./img/icons/burgermenu.svg"
-          alt="germany"
-          class="nav-right-icon"
-        />
-      </div>
+      <div class="nav-width"></div>
     </nav>
 
     <section class="content">
@@ -96,9 +90,28 @@
           </div>
         </div>
         <div class="cards" id="cards"></div>
+        <div class="basket-media d-none" id="openResponsiveBasket">
+          <div class="basket-responsive-position d-none" id="openResponsiveBasketPos">
+            <div class="basket-responsive-position-head">
+              <div></div>
+              <span class="basket-responsive-position-text">Warenkorb</span>
+              <img
+                src="./img/icons/close.svg"
+                alt="close basket"
+                class="close-basket"
+                onclick="closeResponsiveBasket()"
+              />
+            </div>
+            <div class="basket-position-resp" id="basket-position-res">
+            </div>
+            <div id="total-amount-resp" class=""></div>
+          </div>
+        </div>
+        <div class="basket-responsive" onclick="openResponsiveBasket()" id="openResponsiveBasketText"></div>
       </div>
       <div class="basket">
-        <span class="basket-header">WARENKORB</span>
+        <span class="basket-header" id="basket-header">WARENKORB</span>
+  
 
         <div class="basket-content">
           <div class="basket-card" id="basket-card"></div>
