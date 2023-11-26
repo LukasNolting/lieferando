@@ -32,10 +32,7 @@ let nameFood = [];
 let prices = [];
 let amounts = [];
 
-loadFromLocalStorageAmounts();
 loadFromLocalStorageBasket();
-loadFromLocalStoragePrices();
-loadFromLocalStorageLiked();
 
 function noFunction() {
   alert("Aktuell keine Funktion! Danke für dein Verständnis! :)");
@@ -56,17 +53,10 @@ function render() {
 
 function likeCheck() {
   let likedIcon = document.getElementById("liked");
-
-  if (likequery) {
-    likequery = false;
-    likedIcon.classList.remove("heartfill");
-    likedIcon.classList.add("heartnofill");
-  } else {
-    likequery = true;
-    likedIcon.classList.remove("heartnofill");
-    likedIcon.classList.add("heartfill");
-  }
-    saveToLocalStorage();
+  likequery = !likequery;
+  likedIcon.classList.toggle("heartnofill");
+  likedIcon.classList.toggle("heartfill");
+  saveToLocalStorage();
 }
 
 function card(i) {
@@ -202,36 +192,32 @@ function basketResponsiveText() {
 
 function displayTotal() {
   let subtotal = calculateTotalAmount();
-  if (subtotal == 0) {
+  let totalAmountElement = document.getElementById("total-amount");
+
+  if (subtotal === 0) {
     document.getElementById("basket-card").innerHTML = emptyBasket();
   } else {
-    if (subtotal < 15) {
-      document.getElementById("total-amount").innerHTML = minOrderValueText();
-      document.getElementById("total-amount").classList.add("total-amount-yellow");
-      document.getElementById("total-amount").classList.remove("total-amount-green");
-    } else {
-      document.getElementById("total-amount").innerHTML = orderFinishedText();
-      document.getElementById("total-amount").classList.remove("total-amount-yellow");
-      document.getElementById("total-amount").classList.add("total-amount-green");
-    }
+    totalAmountElement.innerHTML =
+      subtotal < 15 ? minOrderValueText() : orderFinishedText();
+    totalAmountElement.classList.toggle("total-amount-yellow", subtotal < 15);
+    totalAmountElement.classList.toggle("total-amount-green", subtotal >= 15);
   }
 }
+
 function displayTotalResponsive() {
   let subtotal = calculateTotalAmount();
-  if (subtotal == 0) {
+  let totalAmountRespElement = document.getElementById("total-amount-resp");
+
+  if (subtotal === 0) {
     document.getElementById("basket-position-res").innerHTML = emptyBasket();
   } else {
-    if (subtotal < 15) {
-      document.getElementById("total-amount-resp").innerHTML = minOrderValueText();
-      document.getElementById("total-amount-resp").classList.add("total-amount-yellow");
-      document.getElementById("total-amount-resp").classList.remove("total-amount-green");
-    } else {
-      document.getElementById("total-amount-resp").innerHTML = orderFinishedText();
-      document.getElementById("total-amount-resp").classList.remove("total-amount-yellow");
-      document.getElementById("total-amount-resp").classList.add("total-amount-green");
-    }
+    totalAmountRespElement.innerHTML =
+      subtotal < 15 ? minOrderValueText() : orderFinishedText();
+    totalAmountRespElement.classList.toggle("total-amount-yellow",subtotal < 15);
+    totalAmountRespElement.classList.toggle("total-amount-green",subtotal >= 15);
   }
 }
+
 
 function minOrderValue() {
   alert("Mindestbestellwert nicht erreicht!");
@@ -256,7 +242,7 @@ function orderFinishedText() {
 }
 
 function orderFinished() {
-  alert("Vielen Dank für Ihre Bestellung!");
+  alert("Vielen Dank für deine Bestellung!");
   nameFood.splice(0, nameFood.length);
   prices.splice(0, prices.length);
   amounts.splice(0, amounts.length);
@@ -284,31 +270,16 @@ function saveToLocalStorage() {
 }
 
 function loadFromLocalStorageBasket() {
-  let storageAsText = localStorage.getItem("nameFood");
+  let storageAsTextName = localStorage.getItem("nameFood");
+  let storageAsTextPrices = localStorage.getItem("prices");
+  let storageAsTextAmounts = localStorage.getItem("amounts");
+  let storageAsTextLike = localStorage.getItem("likequery");
 
-  if (storageAsText) {
-    nameFood = JSON.parse(storageAsText);
-  }
-}
-function loadFromLocalStoragePrices() {
-  let storageAsText = localStorage.getItem("prices");
-
-  if (storageAsText) {
-    prices = JSON.parse(storageAsText);
-  }
-}
-function loadFromLocalStorageAmounts() {
-  let storageAsText = localStorage.getItem("amounts");
-
-  if (storageAsText) {
-    amounts = JSON.parse(storageAsText);
-  }
-}
-function loadFromLocalStorageLiked() {
-  let storageAsText = localStorage.getItem("likequery");
-
-  if (storageAsText) {
-    likequery = JSON.parse(storageAsText);
+  if (storageAsTextName) {
+    nameFood = JSON.parse(storageAsTextName);
+    prices = JSON.parse(storageAsTextPrices);
+    amounts = JSON.parse(storageAsTextAmounts);
+    likequery = JSON.parse(storageAsTextLike);
   }
 }
 
